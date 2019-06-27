@@ -27,10 +27,11 @@ public class User
 	@JoinColumn(name = "branch_id")
 	private Branch branch;
 
-	public User(String name, String address,  Branch branch) {
+	public User(String name, String address,Company company,Branch branch) {
 		super();
 		this.name = name;
 		this.address = address;
+		this.company = company;
 		this.branch = branch;
 	}
 	
