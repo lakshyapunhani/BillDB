@@ -25,6 +25,14 @@ public class Company
 	@OneToMany(mappedBy = "company")
 	private List<User> users;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public List<Branch> getBranches() {
 		return branches;
 	}
