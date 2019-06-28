@@ -48,7 +48,7 @@ public class Branch
 		super();
 	}
 
-	public Branch(String name, String address, Long parent_id) {
+	public Branch(String name, String address) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -79,6 +79,25 @@ public class Branch
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
+	public Long getId() {
+		// TODO Auto-generated method stub
+		return id;
+	}
+
+	public Branch getParent() {
+		return parent;
+	}
+
+	public void setParent(Branch parent) {
+		this.parent = parent;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
 
 //	public Long getParent_id() {
 //		return parent_id;
