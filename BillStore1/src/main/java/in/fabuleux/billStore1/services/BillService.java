@@ -47,6 +47,7 @@ public class BillService {
 		return new ResponseEntity(HttpStatus.CREATED);
 	}
 	
+	//Insert branch under company : id is company ID
 	public ResponseEntity insertBranch(Long id,CompanyLoginInfo companyLoginInfo)
 	{
 		Company company = getCompanyById(id);
@@ -62,6 +63,7 @@ public class BillService {
 		return new ResponseEntity(HttpStatus.CREATED);
 	}
 	
+	//Insert branch under branch : id is branch ID
 	public ResponseEntity insertBranchUnderBranch(Long id,CompanyLoginInfo companyLoginInfo)
 	{
 		Branch branch = getBranchById(id);
