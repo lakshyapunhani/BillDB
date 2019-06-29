@@ -61,6 +61,7 @@ public class BillService {
 		return new ResponseEntity(HttpStatus.CREATED);
 	}
 	
+	//Insert branch under branch : id is branch ID
 	public ResponseEntity insertBranchUnderBranch(Long id,CompanyLoginInfo companyLoginInfo)
 	{
 		Branch branch = getBranchById(id);
