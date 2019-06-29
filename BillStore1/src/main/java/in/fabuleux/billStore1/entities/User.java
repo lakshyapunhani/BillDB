@@ -42,10 +42,24 @@ public class User
 		this.company = company;
 	}
 	
+	public User(String name,String address)
+	{
+		super();
+		this.name = name;
+		this.address = address;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public User() {
 		super();
 	}
-
 	public String getName() {
 		return name;
 	}

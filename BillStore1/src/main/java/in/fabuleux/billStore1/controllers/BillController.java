@@ -23,15 +23,27 @@ public class BillController {
 	}
 	
 	@PostMapping("/company/{id}")
-	public ResponseEntity insertBranch(@PathVariable Long id,@RequestBody CompanyLoginInfo companyLoginInfo)
+	public ResponseEntity insertBranchUnderCompany(@PathVariable Long id,@RequestBody CompanyLoginInfo companyLoginInfo)
 	{
-		return billService.insertBranch(id, companyLoginInfo);
+		return billService.insertBranchUnderCompany(id, companyLoginInfo);
 	}
 	
 	@PostMapping("/company/{companyId}/branch/{id}")
 	public ResponseEntity insertBranchUnderBranch(@PathVariable Long id,@RequestBody CompanyLoginInfo companyLoginInfo)
 	{
 		return billService.insertBranchUnderBranch(id, companyLoginInfo);
+	}
+	
+	@PostMapping("/user/{id}")
+	public ResponseEntity insertUserUnderCompany(@PathVariable Long id,@RequestBody CompanyLoginInfo companyLoginInfo)
+	{
+		return billService.insertUserUnderCompany(id, companyLoginInfo);
+	}
+	
+	@PostMapping("/user/{companyId}/branch/{id}")
+	public ResponseEntity insertUserUnderBranch(@PathVariable Long id,@RequestBody CompanyLoginInfo companyLoginInfo)
+	{
+		return billService.insertUserUnderBranch(id, companyLoginInfo);
 	}
 	
 }

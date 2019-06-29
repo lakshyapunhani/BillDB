@@ -1,7 +1,5 @@
 package in.fabuleux.billStore1.services;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import in.fabuleux.billStore1.entities.Branch;
 import in.fabuleux.billStore1.entities.Company;
 import in.fabuleux.billStore1.entities.LoginInfo;
+import in.fabuleux.billStore1.entities.User;
 import in.fabuleux.billStore1.models.CompanyLoginInfo;
 import in.fabuleux.billStore1.repos.BranchRepository;
 import in.fabuleux.billStore1.repos.CompanyRepository;
@@ -47,7 +46,7 @@ public class BillService {
 		return new ResponseEntity(HttpStatus.CREATED);
 	}
 	
-	public ResponseEntity insertBranch(Long id,CompanyLoginInfo companyLoginInfo)
+	public ResponseEntity insertBranchUnderCompany(Long id,CompanyLoginInfo companyLoginInfo)
 	{
 		Company company = getCompanyById(id);
 		Branch branch = new Branch(companyLoginInfo.getName(),companyLoginInfo.getAddress());
@@ -88,5 +87,36 @@ public class BillService {
 	{
 		Optional<Company> company = companyRepository.findById(id);
 		return company.get();
+	}
+	
+	public ResponseEntity insertUserUnderCompany(Long id,CompanyLoginInfo companyLoginInfo)
+	{
+		Company company = getCompanyById(id);
+		User user = new User(companyLoginInfo.getName(),companyLoginInfo.getAddress());
+		user.setCompany(company);
+		User user2 = userRepository.save(user);
+		LoginInfo loginInfo = new LoginInfo();
+		loginInfo.setUserName(companyLoginInfo.getUserName());
+		loginInfo.setPassword(companyLoginInfo.getPassword());
+		loginInfo.setUserType("U");
+		loginInfo.setTable_id(user2.getId());
+		loginInfoRepository.save(loginInfo);
+		return new ResponseEntity(HttpStatus.CREATED);
+	}
+	
+	public ResponseEntity insertUserUnderBranch(Long id,CompanyLoginInfo companyLoginInfo)
+	{
+		Branch branch = getBranchById(id);
+		User user = new User(companyLoginInfo.getName(),companyLoginInfo.getAddress());
+		user.setCompany(branch.getCompany());
+		user.setBranch(branch);
+		User user2 = userRepository.save(user);
+		LoginInfo loginInfo = new LoginInfo();
+		loginInfo.setUserName(companyLoginInfo.getUserName());
+		loginInfo.setPassword(companyLoginInfo.getPassword());
+		loginInfo.setUserType("U");
+		loginInfo.setTable_id(user2.getId());
+		loginInfoRepository.save(loginInfo);
+		return new ResponseEntity(HttpStatus.CREATED);
 	}
 }
