@@ -90,6 +90,12 @@ public class BillService {
 		return company.get();
 	}
 	
+	public User getUserById(Long id)
+	{
+		Optional<User> user = userRepository.findById(id);
+		return user.get();
+	}
+	
 	public ResponseEntity insertUserUnderCompany(Long id,CompanyLoginInfo companyLoginInfo)
 	{
 		Company company = getCompanyById(id);
@@ -120,4 +126,11 @@ public class BillService {
 		loginInfoRepository.save(loginInfo);
 		return new ResponseEntity(HttpStatus.CREATED);
 	}
+	
+	public LoginInfo getLoginDetails(String username,String password)
+	{
+		LoginInfo loginInfo = loginInfoRepository.findByUserNameAndPassword(username, password);
+		return loginInfo;
+	}
+	
 }

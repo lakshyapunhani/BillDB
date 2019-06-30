@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Branch 
 {
@@ -26,12 +28,12 @@ public class Branch
 	
 	private String address;
 	
-//	private Long parent_id;
-	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "company_id")
 	private Company company;
 	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL )
     @JoinColumn(name = "parent_id")
 	@NotFound(action = NotFoundAction.IGNORE)
@@ -43,6 +45,23 @@ public class Branch
 	
 	@OneToMany(mappedBy = "branch")
 	private List<User> users;
+	
+
+	public List<Branch> getSubBranches() {
+		return subBranches;
+	}
+
+	public void setSubBranches(List<Branch> subBranches) {
+		this.subBranches = subBranches;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
 
 	public Branch() {
 		super();
@@ -52,7 +71,6 @@ public class Branch
 		super();
 		this.name = name;
 		this.address = address;
-		//this.parent_id = parent_id;
 	}
 	
 
@@ -97,15 +115,6 @@ public class Branch
 		this.id = id;
 	}
 	
-	
-
-//	public Long getParent_id() {
-//		return parent_id;
-//	}
-//
-//	public void setParent_id(Long parent_id) {
-//		this.parent_id = parent_id;
-//	}
 	
 	
 }

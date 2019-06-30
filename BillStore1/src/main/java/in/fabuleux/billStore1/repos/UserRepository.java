@@ -8,4 +8,5 @@ import in.fabuleux.billStore1.entities.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+
 }
