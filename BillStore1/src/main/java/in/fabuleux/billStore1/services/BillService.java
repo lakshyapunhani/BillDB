@@ -1,6 +1,5 @@
 package in.fabuleux.billStore1.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +86,7 @@ public class BillService {
 	
 	public Company getCompanyById(Long id)
 	{
-		Optional<Company> company = companyRepository.findByIdAndBranches_parent_idIsNull(id);
+		Optional<Company> company = companyRepository.findById(id);
 		return company.get();
 	}
 	
