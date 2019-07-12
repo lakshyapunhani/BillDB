@@ -26,6 +26,7 @@ public class Company
 	private List<Branch> branches;
 	
 	@OneToMany(mappedBy = "company")
+	@Where(clause = "branch_id is null")
 	private List<User> users;
 
 	public Long getId() {

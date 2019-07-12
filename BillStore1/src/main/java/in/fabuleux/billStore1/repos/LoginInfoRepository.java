@@ -9,4 +9,5 @@ import in.fabuleux.billStore1.entities.User;
 @Repository
 public interface LoginInfoRepository extends JpaRepository<LoginInfo, Long>{
 	LoginInfo findByUserNameAndPassword(String username,String password);
+	LoginInfo findByUserName(String username);
 }

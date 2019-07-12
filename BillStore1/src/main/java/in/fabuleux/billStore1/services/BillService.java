@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import in.fabuleux.billStore1.entities.Branch;
@@ -20,6 +21,9 @@ import in.fabuleux.billStore1.repos.UserRepository;
 @Service
 public class BillService {
 
+	@Autowired 
+	private PasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private CompanyRepository companyRepository;
 	
@@ -38,7 +42,7 @@ public class BillService {
 		Company company2 = companyRepository.save(company);
 		LoginInfo loginInfo = new LoginInfo();
 		loginInfo.setUserName(companyInfo.getUserName());
-		loginInfo.setPassword(companyInfo.getPassword());
+		loginInfo.setPassword(passwordEncoder.encode(companyInfo.getPassword()));
 		loginInfo.setUserType("C");
 		loginInfo.setTable_id(company2.getId());
 		loginInfoRepository.save(loginInfo);
@@ -54,7 +58,7 @@ public class BillService {
 		Branch branch2 = branchRepository.save(branch);
 		LoginInfo loginInfo = new LoginInfo();
 		loginInfo.setUserName(companyLoginInfo.getUserName());
-		loginInfo.setPassword(companyLoginInfo.getPassword());
+		loginInfo.setPassword(passwordEncoder.encode(companyLoginInfo.getPassword()));
 		loginInfo.setUserType("B");
 		loginInfo.setTable_id(branch2.getId());
 		loginInfoRepository.save(loginInfo);
@@ -71,7 +75,7 @@ public class BillService {
 		Branch branch2 = branchRepository.save(branch1);
 		LoginInfo loginInfo = new LoginInfo();
 		loginInfo.setUserName(companyLoginInfo.getUserName());
-		loginInfo.setPassword(companyLoginInfo.getPassword());
+		loginInfo.setPassword(passwordEncoder.encode(companyLoginInfo.getPassword()));
 		loginInfo.setUserType("B");
 		loginInfo.setTable_id(branch2.getId());
 		loginInfoRepository.save(loginInfo);
@@ -105,7 +109,7 @@ public class BillService {
 		User user2 = userRepository.save(user);
 		LoginInfo loginInfo = new LoginInfo();
 		loginInfo.setUserName(companyLoginInfo.getUserName());
-		loginInfo.setPassword(companyLoginInfo.getPassword());
+		loginInfo.setPassword(passwordEncoder.encode(companyLoginInfo.getPassword()));
 		loginInfo.setUserType("U");
 		loginInfo.setTable_id(user2.getId());
 		loginInfoRepository.save(loginInfo);
@@ -121,7 +125,7 @@ public class BillService {
 		User user2 = userRepository.save(user);
 		LoginInfo loginInfo = new LoginInfo();
 		loginInfo.setUserName(companyLoginInfo.getUserName());
-		loginInfo.setPassword(companyLoginInfo.getPassword());
+		loginInfo.setPassword(passwordEncoder.encode(companyLoginInfo.getPassword()));
 		loginInfo.setUserType("U");
 		loginInfo.setTable_id(user2.getId());
 		loginInfoRepository.save(loginInfo);
@@ -130,8 +134,12 @@ public class BillService {
 	
 	public LoginInfo getLoginDetails(String username,String password)
 	{
-		LoginInfo loginInfo = loginInfoRepository.findByUserNameAndPassword(username, password);
-		return loginInfo;
+		//LoginInfo loginInfo = loginInfoRepository.findByUserNameAndPassword(username, passwordEncoder.);
+		LoginInfo info = loginInfoRepository.findByUserName(username);
+		if (passwordEncoder.matches(password, info.getPassword())) {
+			return info;	
+		}
+		return null;
 	}
 	
 }
