@@ -1,5 +1,6 @@
 package in.fabuleux.billStore1.services;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import in.fabuleux.billStore1.entities.Branch;
 import in.fabuleux.billStore1.entities.Company;
@@ -50,7 +52,12 @@ public class BillService {
 		loginInfo.setTable_id(company2.getId());
 		loginInfoRepository.save(loginInfo);
 		
-		return new ResponseEntity(HttpStatus.CREATED);
+		URI uri =  ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(company2.getId())
+				.toUri();
+				
+		return ResponseEntity.created(uri).build();
 	}
 	
 	public ResponseEntity insertBranchUnderCompany(Long id,CompanyLoginInfo companyLoginInfo)
@@ -65,7 +72,13 @@ public class BillService {
 		loginInfo.setUserType("B");
 		loginInfo.setTable_id(branch2.getId());
 		loginInfoRepository.save(loginInfo);
-		return new ResponseEntity(HttpStatus.CREATED);
+		
+		URI uri =  ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(branch2.getId())
+				.toUri();
+				
+		return ResponseEntity.created(uri).build();
 	}
 	
 	//Insert branch under branch : id is branch ID
@@ -82,7 +95,13 @@ public class BillService {
 		loginInfo.setUserType("B");
 		loginInfo.setTable_id(branch2.getId());
 		loginInfoRepository.save(loginInfo);
-		return new ResponseEntity(HttpStatus.CREATED);
+		
+		URI uri =  ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(branch2.getId())
+				.toUri();
+				
+		return ResponseEntity.created(uri).build();
 	}
 	
 	public Branch getBranchById(Long id)
@@ -116,7 +135,12 @@ public class BillService {
 		loginInfo.setUserType("U");
 		loginInfo.setTable_id(user2.getId());
 		loginInfoRepository.save(loginInfo);
-		return new ResponseEntity(HttpStatus.CREATED);
+		URI uri =  ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(user2.getId())
+				.toUri();
+				
+		return ResponseEntity.created(uri).build();
 	}
 	
 	public ResponseEntity insertUserUnderBranch(Long id,CompanyLoginInfo companyLoginInfo)
@@ -132,7 +156,12 @@ public class BillService {
 		loginInfo.setUserType("U");
 		loginInfo.setTable_id(user2.getId());
 		loginInfoRepository.save(loginInfo);
-		return new ResponseEntity(HttpStatus.CREATED);
+		URI uri =  ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(user2.getId())
+				.toUri();
+				
+		return ResponseEntity.created(uri).build();
 	}
 	
 	public LoginInfo getLoginDetails(HashMap<String, String> hashMap)
