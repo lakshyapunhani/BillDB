@@ -1,5 +1,7 @@
 package in.fabuleux.billStore1.controllers;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,10 +53,10 @@ public class BillController {
 		return billService.insertUserUnderBranch(id, companyLoginInfo);
 	}
 	
-	@GetMapping("/login/{username}/{password}")
-	public LoginInfo getLoginDetails(@PathVariable String username,@PathVariable String password)
+	@PostMapping("/login")
+	public LoginInfo getLogin(@RequestBody HashMap<String, String> hashMap)
 	{
-		return billService.getLoginDetails(username, password);
+		return billService.getLoginDetails(hashMap);
 	}
 	
 	@GetMapping("/company/{id}")
@@ -73,6 +75,12 @@ public class BillController {
 	public User getUser(@PathVariable Long id)
 	{
 		return billService.getUserById(id);
+	}
+	
+	@GetMapping("/test")
+	public String testMethod()
+	{
+		return "Hello";
 	}
 	
 }

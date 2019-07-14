@@ -1,5 +1,6 @@
 package in.fabuleux.billStore1.services;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import in.fabuleux.billStore1.repos.BranchRepository;
 import in.fabuleux.billStore1.repos.CompanyRepository;
 import in.fabuleux.billStore1.repos.LoginInfoRepository;
 import in.fabuleux.billStore1.repos.UserRepository;
+import in.fabuleux.billStore1.responses.NotFoundException;
+import in.fabuleux.billStore1.responses.UnAuthorizedException;
 
 @Service
 public class BillService {
@@ -132,14 +135,21 @@ public class BillService {
 		return new ResponseEntity(HttpStatus.CREATED);
 	}
 	
-	public LoginInfo getLoginDetails(String username,String password)
+	public LoginInfo getLoginDetails(HashMap<String, String> hashMap)
 	{
-		//LoginInfo loginInfo = loginInfoRepository.findByUserNameAndPassword(username, passwordEncoder.);
-		LoginInfo info = loginInfoRepository.findByUserName(username);
-		if (passwordEncoder.matches(password, info.getPassword())) {
-			return info;	
+		String username = hashMap.get("username");
+		String password = hashMap.get("password");
+		Optional<LoginInfo> info = loginInfoRepository.findByUserName(username);
+		if(!info.isPresent())
+		{
+			throw new NotFoundException("User doesn't exist");
 		}
-		return null;
+		if (passwordEncoder.matches(password, info.get().getPassword())) {
+			return info.get();	
+		}
+		else {
+			throw new UnAuthorizedException("Password doesn't match");
+		}
 	}
 	
 }
