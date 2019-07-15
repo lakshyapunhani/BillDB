@@ -13,6 +13,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import in.fabuleux.billStore1.models.ExceptionResponse;
+import in.fabuleux.billStore1.responses.BadRequestException;
 import in.fabuleux.billStore1.responses.NotFoundException;
 import in.fabuleux.billStore1.responses.UnAuthorizedException;
 
@@ -43,6 +44,14 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage() , request.getDescription(false));
 
 		return new ResponseEntity(exceptionResponse,HttpStatus.UNAUTHORIZED);
+	}
+	
+	@ExceptionHandler(BadRequestException.class)
+	public final ResponseEntity<Object> handleBadRequestExceptions(Exception ex, WebRequest request)
+	{
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage() , request.getDescription(false));
+
+		return new ResponseEntity(exceptionResponse,HttpStatus.BAD_REQUEST);
 	}
 
 	@Override

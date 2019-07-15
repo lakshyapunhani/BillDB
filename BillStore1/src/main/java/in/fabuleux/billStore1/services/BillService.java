@@ -20,6 +20,7 @@ import in.fabuleux.billStore1.repos.BranchRepository;
 import in.fabuleux.billStore1.repos.CompanyRepository;
 import in.fabuleux.billStore1.repos.LoginInfoRepository;
 import in.fabuleux.billStore1.repos.UserRepository;
+import in.fabuleux.billStore1.responses.BadRequestException;
 import in.fabuleux.billStore1.responses.NotFoundException;
 import in.fabuleux.billStore1.responses.UnAuthorizedException;
 
@@ -43,6 +44,9 @@ public class BillService {
 	
 	public ResponseEntity insertCompany(CompanyLoginInfo companyInfo)
 	{
+		if (findUsername(companyInfo.getUserName())) {
+			throw new BadRequestException("Username already exists");
+		}
 		Company company = new Company(companyInfo.getName(),companyInfo.getAddress());
 		Company company2 = companyRepository.save(company);
 		LoginInfo loginInfo = new LoginInfo();
@@ -62,6 +66,9 @@ public class BillService {
 	
 	public ResponseEntity insertBranchUnderCompany(Long id,CompanyLoginInfo companyLoginInfo)
 	{
+		if (findUsername(companyLoginInfo.getUserName())) {
+			throw new BadRequestException("Username already exists");
+		}
 		Company company = getCompanyById(id);
 		Branch branch = new Branch(companyLoginInfo.getName(),companyLoginInfo.getAddress());
 		branch.setCompany(company);
@@ -84,6 +91,9 @@ public class BillService {
 	//Insert branch under branch : id is branch ID
 	public ResponseEntity insertBranchUnderBranch(Long id,CompanyLoginInfo companyLoginInfo)
 	{
+		if (findUsername(companyLoginInfo.getUserName())) {
+			throw new BadRequestException("Username already exists");
+		}
 		Branch branch = getBranchById(id);
 		Branch branch1 = new Branch(companyLoginInfo.getName(),companyLoginInfo.getAddress());
 		branch1.setParent(branch);
@@ -125,6 +135,9 @@ public class BillService {
 	
 	public ResponseEntity insertUserUnderCompany(Long id,CompanyLoginInfo companyLoginInfo)
 	{
+		if (findUsername(companyLoginInfo.getUserName())) {
+			throw new BadRequestException("Username already exists");
+		}
 		Company company = getCompanyById(id);
 		User user = new User(companyLoginInfo.getName(),companyLoginInfo.getAddress());
 		user.setCompany(company);
@@ -145,6 +158,9 @@ public class BillService {
 	
 	public ResponseEntity insertUserUnderBranch(Long id,CompanyLoginInfo companyLoginInfo)
 	{
+		if (findUsername(companyLoginInfo.getUserName())) {
+			throw new BadRequestException("Username already exists");
+		}
 		Branch branch = getBranchById(id);
 		User user = new User(companyLoginInfo.getName(),companyLoginInfo.getAddress());
 		user.setCompany(branch.getCompany());
@@ -179,6 +195,19 @@ public class BillService {
 		else {
 			throw new UnAuthorizedException("Password doesn't match");
 		}
+	}
+	
+	public boolean findUsername(String username)
+	{
+		Optional<LoginInfo> info = loginInfoRepository.findByUserName(username);
+		if (info.isPresent()) 
+		{
+			return true;
+		}
+		else {
+			return false;
+		}
+
 	}
 	
 }
